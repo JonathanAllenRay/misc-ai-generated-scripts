@@ -1,0 +1,91 @@
+// See https://aka.ms/new-console-template for more information
+//Console.WriteLine("Hello, World!");
+
+
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+using System.Collections.Generic;
+
+public class SubsetSum
+{
+    public static List<List<float>> FindSubsetsWithSum(float[] nums, float target)
+    {
+        List<List<float>> results = new List<List<float>>();
+        Console.WriteLine("Starting.");
+        void Backtrack(List<float> current, int startIndex, float target)
+        {
+            if (target >= -1f && target <= 1f)
+            {
+                List<float> list = new List<float>(current);
+                if (list.Count <= 7)
+                {
+                    Console.Write(String.Join(",", ConvertToLetters(list)));  // "1; 2; 3
+                    float total = 0;
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        total += list[i];
+                    }
+                    Console.WriteLine("\nTotal: " + total);
+                    Console.WriteLine("");
+                }
+                results.Add(list);
+                return;
+            }
+            if (target < -1f)
+            {
+                return;
+            }
+
+            for (int i = startIndex; i < nums.Length; i++)
+            {
+                current.Add(nums[i]);
+                Backtrack(current, i, target - nums[i]);
+                current.RemoveAt(current.Count - 1);
+            }
+        }
+
+        Backtrack(new List<float>(), 0, target);
+        Console.WriteLine("Done Backtracking.");
+        return results;
+    }
+
+    public static List<String> ConvertToLetters(List<float> list)
+    {
+        Dictionary<float, string> data = new Dictionary<float, string>
+        {
+            { 71.1f, "A"},
+            { 156.2f, "R"},
+            { 129.1f, "E" },
+            { 128.21f, "Q" },
+            { 57.1f, "G" },
+            { 137.2f, "H" },
+            { 113.2f, "L" },
+            { 128.2f, "K" },
+            { 147.2f, "F" },
+            { 97.1f, "P" },
+            { 163.2f, "Y" },
+            { 99.1f, "V" }
+         };
+        List<string> result = new List<string>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            result.Add(data[list[i]]);
+        }
+        return result;
+    }
+
+    public static void Main()
+    {
+        float[] nums = { 71.1f, 156.2f, 129.1f, 128.2f, 57.1f, 137.2f,
+        113.2f, 128.2f, 147.2f, 97.1f, 163.2f, 99.1f };
+        float target = 379f;
+        List<List<float>> result = FindSubsetsWithSum(nums, target);
+        Console.WriteLine(result.Count);
+        foreach (List<float> subset in result)
+        {
+            Console.WriteLine(String.Join("\n", subset));
+        }
+    }
+}
